@@ -2,11 +2,11 @@ import { useState } from "react";
 
 import registerSchema from "../validators/schema/registerSchema";
 import validaterFn from "../validators/validatorFn/validatorFunction";
-import { useAuth } from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import InputForm from "../components/input/InputForm";
 import InputErrorMessage from "../components/input/InputErrorMessage";
 import ButtonSky from "../components/button/ButtonSky";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm() {
     const [input, setInput] = useState({
@@ -19,12 +19,17 @@ export default function RegisterForm() {
         phoneNumber: "",
         birthDate: "",
         gender: "",
+        role: "USER",
     });
     const [error, setError] = useState({});
+
     const { register } = useAuth();
+
+    const navigate = useNavigate();
 
     const handleChangeInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
+        setError({});
     };
 
     const handleSubmitForm = async (e) => {
@@ -36,7 +41,8 @@ export default function RegisterForm() {
             }
             setError({});
             register(input);
-            <Link to={"/"} />;
+            console.log(input);
+            navigate("/login");
         } catch (error) {
             console.log(error);
             // toast(error.response?.data.message);
