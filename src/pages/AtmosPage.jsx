@@ -1,3 +1,3 @@
 export default function AtmosPage() {
-    return <div>AtmosPage</div>;
+    return <div className="h-screen w-screen">AtmosPage</div>;
 }

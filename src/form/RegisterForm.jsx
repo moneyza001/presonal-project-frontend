@@ -39,9 +39,7 @@ export default function RegisterForm() {
             if (validationError) {
                 return setError(validationError);
             }
-            setError({});
             register(input);
-            console.log(input);
             navigate("/login");
         } catch (error) {
             console.log(error);

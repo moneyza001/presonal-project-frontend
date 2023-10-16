@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import useAuth from "../hooks/useAuth";
 import InputForm from "../components/input/InputForm";
 import ButtonSky from "../components/button/ButtonSky";
-import { useNavigate } from "react-router-dom";
 import ButtonRose from "../components/button/ButtonRose";
 
 export default function LoginForm() {
@@ -19,37 +21,46 @@ export default function LoginForm() {
     const handleSubmitForm = async (e) => {
         try {
             e.preventDefault();
-            console.log(input);
+            // console.log(input);
             login(input);
-            navigate("/");
+            // navigate("/");
         } catch (error) {
-            console.log(error);
+            toast("test");
+            console.log("test");
         }
     };
+    // const handleSubmitForm = (e) => {
+    //     e.preventDefault();
+    //     login(input).catch((error) => {
+    //         toast(error.response.data.message);
+    //     });
+    // };
 
     return (
-        <form className="grid gap-4" onSubmit={handleSubmitForm}>
-            <InputForm
-                placeholder="Email adress"
-                name="email"
-                value={input.email}
-                onChange={handleChangeInput}
-            />
-            <InputForm
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={input.password}
-                onChange={handleChangeInput}
-            />
-            <br />
-            <ButtonSky adjust="py-2 rounded-2xl">เข้าสู่ระบบ</ButtonSky>
+        <div className="flex flex-col gap-4">
+            <form className="grid gap-4" onSubmit={handleSubmitForm}>
+                <InputForm
+                    placeholder="Email adress"
+                    name="email"
+                    value={input.email}
+                    onChange={handleChangeInput}
+                />
+                <InputForm
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    value={input.password}
+                    onChange={handleChangeInput}
+                />
+                <br />
+                <ButtonSky adjust="py-2 rounded-2xl">เข้าสู่ระบบ</ButtonSky>
+            </form>
             <ButtonRose
                 adjust="py-2 rounded-2xl"
                 onClick={() => navigate("/register")}
             >
                 สมัครสมาชิก
             </ButtonRose>
-        </form>
+        </div>
     );
 }
