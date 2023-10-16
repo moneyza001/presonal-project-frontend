@@ -21,20 +21,11 @@ export default function LoginForm() {
     const handleSubmitForm = async (e) => {
         try {
             e.preventDefault();
-            // console.log(input);
-            login(input);
-            // navigate("/");
+            await login(input);
         } catch (error) {
-            toast("test");
-            console.log("test");
+            toast.error("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
         }
     };
-    // const handleSubmitForm = (e) => {
-    //     e.preventDefault();
-    //     login(input).catch((error) => {
-    //         toast(error.response.data.message);
-    //     });
-    // };
 
     return (
         <div className="flex flex-col gap-4">

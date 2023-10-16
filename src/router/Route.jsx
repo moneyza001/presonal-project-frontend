@@ -8,7 +8,8 @@ import AllServicePage from "../pages/AllServicePage";
 import BookingPage from "../pages/BookingPage";
 import Authenticate from "../checkAuth/Authenticate";
 import RedirectIfAuth from "../checkAuth/RedirectIfAuth";
-import Loading from "../loading/Loading";
+import AdminPage from "../pages/AdminPage";
+// import CheckAdmin from "../checkAuth/CheckAdmin";
 
 const router = createBrowserRouter([
     {
@@ -26,7 +27,6 @@ const router = createBrowserRouter([
             },
             { path: "/register", element: <RegisterPage /> },
             { path: "/service", element: <AllServicePage /> },
-            { path: "/load", element: <Loading /> },
             {
                 path: "/booking",
                 element: (
@@ -34,6 +34,10 @@ const router = createBrowserRouter([
                         <BookingPage />
                     </Authenticate>
                 ),
+            },
+            {
+                path: "/admin",
+                element: <AdminPage />,
             },
         ],
     },

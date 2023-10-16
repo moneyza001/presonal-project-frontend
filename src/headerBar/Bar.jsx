@@ -11,7 +11,7 @@ export default function Bar() {
     const { logout, authUser } = useAuth();
 
     return (
-        <header className="grid grid-cols-3 py-2 px-4 sticky top-0 bg-white">
+        <header className="grid grid-cols-3 py-2 px-4 sticky top-0 bg-white navbar bg-base-100">
             <div>
                 <LogoImage
                     adjust="w-20 cursor-pointer"
@@ -22,6 +22,7 @@ export default function Bar() {
                 <TextBox onClick={() => navigate("/")}>หน้าหลัก</TextBox>
                 <TextBox onClick={() => navigate("/service")}>บริการ</TextBox>
             </div>
+
             <div className="flex gap-8 items-center justify-end">
                 {authUser ? (
                     <ButtonSky onClick={() => logout()}>ออกจากระบบ</ButtonSky>
