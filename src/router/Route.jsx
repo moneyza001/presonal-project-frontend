@@ -9,7 +9,7 @@ import BookingPage from "../pages/BookingPage";
 import Authenticate from "../checkAuth/Authenticate";
 import RedirectIfAuth from "../checkAuth/RedirectIfAuth";
 import AdminPage from "../pages/AdminPage";
-// import CheckAdmin from "../checkAuth/CheckAdmin";
+import MyBookingPage from "../pages/MyBookingPage";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +32,14 @@ const router = createBrowserRouter([
                 element: (
                     <Authenticate>
                         <BookingPage />
+                    </Authenticate>
+                ),
+            },
+            {
+                path: "/mybooking",
+                element: (
+                    <Authenticate>
+                        <MyBookingPage />
                     </Authenticate>
                 ),
             },

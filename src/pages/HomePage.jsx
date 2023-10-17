@@ -7,7 +7,7 @@ export default function HomePage() {
         <div>
             <LandingHomePage />
             <ServicePage />
-            <AtmosPage />
+            {/* <AtmosPage /> */}
         </div>
     );
 }

@@ -29,7 +29,7 @@ export default function RegisterForm() {
 
     const handleChangeInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
-        setError({});
+        setError({ ...error, [e.target.name]: "" });
     };
 
     const handleSubmitForm = async (e) => {
