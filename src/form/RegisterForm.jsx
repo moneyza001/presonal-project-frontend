@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import registerSchema from "../validators/schema/registerSchema";
 import validaterFn from "../validators/validatorFn/validatorFunction";
@@ -6,7 +8,6 @@ import useAuth from "../hooks/useAuth";
 import InputForm from "../components/input/InputForm";
 import InputErrorMessage from "../components/input/InputErrorMessage";
 import ButtonSky from "../components/button/ButtonSky";
-import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm() {
     const [input, setInput] = useState({
@@ -41,9 +42,10 @@ export default function RegisterForm() {
             }
             register(input);
             navigate("/login");
+            toast.success("ลงทะเบียนเสร็จสื้น");
         } catch (error) {
-            console.log(error);
-            // toast(error.response?.data.message);
+            toast(error.response?.data.message);
+            // console.log(error);
         }
     };
     return (

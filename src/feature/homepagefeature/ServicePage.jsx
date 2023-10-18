@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import useService from "../hooks/useService";
-import ServiceContent from "../service/ServiceContent";
-import ServiceElements from "../service/ServiceElements";
+import useService from "../../hooks/useService";
+import ServiceContent from "../../service/ServiceContent";
+import ServiceElements from "../../service/ServiceElements";
 
 export default function ServicePage() {
     const { allService } = useService();

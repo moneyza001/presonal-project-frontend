@@ -22,6 +22,7 @@ export default function LoginForm() {
         try {
             e.preventDefault();
             await login(input);
+            toast.success("ยินดีต้อนรับ");
         } catch (error) {
             toast.error("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
         }

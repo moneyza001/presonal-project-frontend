@@ -12,7 +12,6 @@ export default function ServiceContextProvider({ children }) {
             const getService = async () => {
                 const serviceItem = await axios.get("/service");
                 setAllService(serviceItem.data);
-                console.log(serviceItem);
             };
             getService();
         } catch (error) {
