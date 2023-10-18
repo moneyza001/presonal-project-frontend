@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import useBook from "../../hooks/useBook";
 import InputForm from "../../components/input/InputForm";
 import ButtonSky from "../../components/button/ButtonSky";
+import makeBookingSchema from "../../validators/schema/bookingSchema";
+import validaterFn from "../../validators/validatorFn/validatorFunction";
 
 export default function BookingPage() {
     const [input, setInput] = useState({
@@ -12,22 +17,24 @@ export default function BookingPage() {
     });
 
     const { createBooking } = useBook();
+    const navigate = useNavigate();
 
     const handleChangeInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
 
-    const handleSubmitForm = async (e) => {
-        try {
-            e.preventDefault();
-            input.hairStylistId = +input.hairStylistId;
-            console.log(input);
-
-            await createBooking(input);
-        } catch (error) {
-            console.log(error);
+    const handleSubmitForm = (e) => {
+        e.preventDefault();
+        input.hairStylistId = +input.hairStylistId;
+        const errorObj = validaterFn(makeBookingSchema(), input);
+        if (errorObj) {
+            return toast.error("กรุณากรอกข้อมูลให้ครบถ้วน");
         }
+        createBooking(input);
+        toast.success("การจองสำเร็จ");
+        navigate("/mybooking");
     };
+
     return (
         <form
             className="grid grid-cols-2 gap-x-3 gap-y-4 "

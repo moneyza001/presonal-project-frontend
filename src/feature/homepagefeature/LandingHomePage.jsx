@@ -1,5 +1,5 @@
-import ButtonRose from "../components/button/ButtonRose";
-import ButtonSky from "../components/button/ButtonSky";
+import ButtonRose from "../../components/button/ButtonRose";
+import ButtonSky from "../../components/button/ButtonSky";
 import { useNavigate } from "react-router-dom";
 
 export default function LandingHomePage() {

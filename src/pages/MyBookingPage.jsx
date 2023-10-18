@@ -1,3 +1,9 @@
+import Mybookingtable from "../feature/mybookingfeature/Mybookingtable";
+
 export default function MyBookingPage() {
-    return <div>MyBookingPage</div>;
+    return (
+        <div>
+            <Mybookingtable />
+        </div>
+    );
 }

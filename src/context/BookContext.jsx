@@ -6,7 +6,11 @@ export const BookContext = createContext();
 
 export default function BookContextProvider({ children }) {
     const createBooking = async (bookingObj) => {
-        await axios.post("/book", bookingObj);
+        try {
+            await axios.post("/book", bookingObj);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
