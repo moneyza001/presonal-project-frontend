@@ -1,38 +1,81 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 import useBook from "../../hooks/useBook";
+import useService from "../../hooks/useService";
 import InputForm from "../../components/input/InputForm";
 import ButtonSky from "../../components/button/ButtonSky";
 import makeBookingSchema from "../../validators/schema/bookingSchema";
 import validaterFn from "../../validators/validatorFn/validatorFunction";
 
-export default function BookingPage() {
+export default function BookingForm() {
     const [input, setInput] = useState({
         bookDate: "",
-        bookTime: "",
-        serviceName: "",
+        bookTimeId: "",
+        serviceId: "",
         hairStylistId: "",
     });
 
-    const { createBooking } = useBook();
+    const {
+        createBooking,
+        getBookingTarget,
+        getBookingTime,
+        bookTime,
+        findBookedItem,
+        bookedItem,
+        setBookedItem,
+    } = useBook();
+
+    const { allService } = useService();
+
+    useEffect(() => {
+        getBookingTime();
+    }, []);
+
+    useEffect(() => {
+        if (input.bookDate !== "" && input.hairStylistId !== "") {
+            findBookedItem(input).then((res) => {
+                setBookedItem(res.data?.[0]);
+            });
+        }
+    }, [input.bookDate, input.hairStylistId]);
+
     const navigate = useNavigate();
 
     const handleChangeInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
 
-    const handleSubmitForm = (e) => {
-        e.preventDefault();
-        input.hairStylistId = +input.hairStylistId;
-        const errorObj = validaterFn(makeBookingSchema(), input);
-        if (errorObj) {
-            return toast.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+    // console.log(bookedItem?.data);
+    // console.log(bookTime.data);
+
+    const handleSubmitForm = async (e) => {
+        try {
+            e.preventDefault();
+            input.hairStylistId = +input.hairStylistId;
+            input.serviceId = +input.serviceId;
+            input.bookTimeId = +input.bookTimeId;
+
+            const errorObj = validaterFn(makeBookingSchema(), input);
+
+            if (errorObj) {
+                return errorObj.bookDate
+                    ? toast.error("วันที่ต้องมากกว่าหรือเท่ากับวันปัจจุบัน")
+                    : toast.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+            }
+
+            const result = await createBooking(input);
+            if (result) {
+                await getBookingTarget();
+                toast.success("การจองสำเร็จ");
+                navigate("/mybooking");
+                return;
+            }
+        } catch (error) {
+            console.log(error);
         }
-        createBooking(input);
-        toast.success("การจองสำเร็จ");
-        navigate("/mybooking");
     };
 
     return (
@@ -50,16 +93,6 @@ export default function BookingPage() {
                 />
             </div>
 
-            <div className="col-span-full">
-                <InputForm
-                    placeholder="เวลา"
-                    type="time"
-                    value={input.bookTime}
-                    onChange={handleChangeInput}
-                    name="bookTime"
-                />
-            </div>
-
             <div className="">
                 <select
                     name="hairStylistId"
@@ -71,28 +104,43 @@ export default function BookingPage() {
                         เลือกช่าง
                     </option>
                     <option value="1">Alice</option>
-                    <option value="2">Hyper</option>
                 </select>
             </div>
 
             <div className="">
                 <select
-                    name="serviceName"
+                    name="bookTimeId"
                     className="p-2 rounded-lg w-full block mx-auto"
-                    value={input.serviceName}
+                    value={input.bookTimeId}
                     onChange={handleChangeInput}
                 >
-                    <option value="" disabled selected hidden>
+                    <option value="" disabled hidden>
+                        เลือกเวลา
+                    </option>
+
+                    {bookTime.data?.map((el) => {
+                        <option key={el.id} value={el.id}>
+                            {el.bookTime}
+                        </option>;
+                    })}
+                </select>
+            </div>
+
+            <div className="">
+                <select
+                    name="serviceId"
+                    className="p-2 rounded-lg w-full block mx-auto"
+                    value={input.serviceId}
+                    onChange={handleChangeInput}
+                >
+                    <option value="" disabled hidden>
                         เลือกบริการ
                     </option>
-                    <option value="ตัดผมผู้ชาย">ตัดผมผู้ชาย</option>
-                    <option value="ตัดผมผู้หญิง">ตัดผมผู้หญิง</option>
-                    <option value="โกนหนวด / แต่งเครา">
-                        โกนหนวด / แต่งเครา
-                    </option>
-                    <option value="สระไดร์">สระ-ไดร์</option>
-                    <option value="ทำสี">ทำสีผม</option>
-                    <option value="ดัดผม">ดัดผม</option>
+                    {allService.map((el) => (
+                        <option key={el.id} value={el.id}>
+                            {el?.serviceName}
+                        </option>
+                    ))}
                 </select>
             </div>
             <div className="mx-auto col-span-full">

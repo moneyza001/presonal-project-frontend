@@ -15,13 +15,35 @@ export default function Bar2() {
             <div className="btn btn-ghost normal-case text-xl px-16">
                 <LogoImage
                     adjust="w-20 cursor-pointer"
-                    onClick={() => navigate("/")}
+                    onClick={() => {
+                        if (authUser?.role === "ADMIN") {
+                            return navigate("/admin");
+                        }
+                        return navigate("/");
+                    }}
                 />
             </div>
 
             <div className="flex items-center justify-center gap-12 px-4 ">
-                <TextBox onClick={() => navigate("/")}>หน้าหลัก</TextBox>
-                <TextBox onClick={() => navigate("/service")}>บริการ</TextBox>
+                {(authUser?.role !== "ADMIN" && (
+                    <>
+                        <TextBox onClick={() => navigate("/")}>
+                            หน้าหลัก
+                        </TextBox>
+                        <TextBox onClick={() => navigate("/service")}>
+                            บริการ
+                        </TextBox>
+                    </>
+                )) || (
+                    <>
+                        <TextBox onClick={() => navigate("/admin")}>
+                            หน้าหลัก
+                        </TextBox>
+                        <TextBox onClick={() => navigate("/admin/editservice")}>
+                            จัดการบริการ
+                        </TextBox>
+                    </>
+                )}
             </div>
 
             <div>
@@ -35,26 +57,32 @@ export default function Bar2() {
                             เข้าสู่ระบบ
                         </ButtonSky>
                     )}
-                    <li>
-                        <details className="px-4 ">
-                            <summary>การจอง</summary>
-                            <ul
-                                tabIndex={0}
-                                className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                            >
-                                <li>
-                                    <a onClick={() => navigate("/booking")}>
-                                        จองคิว
-                                    </a>
-                                </li>
-                                <li>
-                                    <a onClick={() => navigate("/mybooking")}>
-                                        ดูการจอง
-                                    </a>
-                                </li>
-                            </ul>
-                        </details>
-                    </li>
+                    {authUser?.role !== "ADMIN" && (
+                        <li>
+                            <details className="px-4 ">
+                                <summary>การจอง</summary>
+                                <ul
+                                    tabIndex={0}
+                                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                                >
+                                    <li>
+                                        <a onClick={() => navigate("/booking")}>
+                                            จองคิว
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            onClick={() =>
+                                                navigate("/mybooking")
+                                            }
+                                        >
+                                            ดูการจอง
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                    )}
                 </ul>
             </div>
         </div>

@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth";
 import InputForm from "../components/input/InputForm";
 import ButtonSky from "../components/button/ButtonSky";
 import ButtonRose from "../components/button/ButtonRose";
+import useBook from "../hooks/useBook";
 
 export default function LoginForm() {
     const [input, setInput] = useState({
@@ -13,7 +14,7 @@ export default function LoginForm() {
         password: "",
     });
     const { login } = useAuth();
-
+    const { getBookingTarget } = useBook();
     const handleChangeInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -22,6 +23,7 @@ export default function LoginForm() {
         try {
             e.preventDefault();
             await login(input);
+            getBookingTarget();
             toast.success("ยินดีต้อนรับ");
         } catch (error) {
             toast.error("อีเมลหรือรหัสผ่านไม่ถูกต้อง");

@@ -1,5 +1,9 @@
 import BookingForm from "../feature/bookingfeature/BookingForm";
 
 export default function BookingPage() {
-    return <BookingForm />;
+    return (
+        <div className="w-1/3 flex justify-center items-center">
+            <BookingForm />
+        </div>
+    );
 }

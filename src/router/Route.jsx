@@ -10,6 +10,8 @@ import Authenticate from "../checkAuth/Authenticate";
 import RedirectIfAuth from "../checkAuth/RedirectIfAuth";
 import AdminPage from "../pages/AdminPage";
 import MyBookingPage from "../pages/MyBookingPage";
+import CheckAdmin from "../checkAuth/CheckAdmin";
+import EditService from "../pages/EditService";
 
 const router = createBrowserRouter([
     {
@@ -25,7 +27,14 @@ const router = createBrowserRouter([
                     </RedirectIfAuth>
                 ),
             },
-            { path: "/register", element: <RegisterPage /> },
+            {
+                path: "/register",
+                element: (
+                    <RedirectIfAuth>
+                        <RegisterPage />
+                    </RedirectIfAuth>
+                ),
+            },
             { path: "/service", element: <AllServicePage /> },
             {
                 path: "/booking",
@@ -45,7 +54,19 @@ const router = createBrowserRouter([
             },
             {
                 path: "/admin",
-                element: <AdminPage />,
+                element: (
+                    <CheckAdmin>
+                        <AdminPage />
+                    </CheckAdmin>
+                ),
+            },
+            {
+                path: "/admin/editservice",
+                element: (
+                    <CheckAdmin>
+                        <EditService />
+                    </CheckAdmin>
+                ),
             },
         ],
     },

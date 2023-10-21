@@ -5,13 +5,16 @@ import axios from "../config/axios";
 export const ServiceContext = createContext();
 
 export default function ServiceContextProvider({ children }) {
+    const [someService, setSomeService] = useState([]);
     const [allService, setAllService] = useState([]);
 
     useEffect(() => {
         try {
             const getService = async () => {
                 const serviceItem = await axios.get("/service");
-                setAllService(serviceItem.data);
+                const allServiceItem = await axios.get("/service/all");
+                setSomeService(serviceItem.data);
+                setAllService(allServiceItem.data);
             };
             getService();
         } catch (error) {
@@ -20,7 +23,7 @@ export default function ServiceContextProvider({ children }) {
     }, []);
 
     return (
-        <ServiceContext.Provider value={{ allService }}>
+        <ServiceContext.Provider value={{ allService, someService }}>
             {children}
         </ServiceContext.Provider>
     );
