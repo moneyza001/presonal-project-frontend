@@ -4,8 +4,11 @@ import useAuth from "../hooks/useAuth";
 export default function RedirectIfAuth({ children }) {
     const { authUser } = useAuth();
 
-    if (authUser) {
-        return <Navigate to="/booking" />;
+    if (authUser?.role === "USER") {
+        return <Navigate to="/" />;
+    }
+    if (authUser?.role === "ADMIN") {
+        return <Navigate to="/admin" />;
     }
     return children;
 }

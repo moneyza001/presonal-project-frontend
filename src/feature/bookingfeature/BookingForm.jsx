@@ -28,7 +28,7 @@ export default function BookingForm() {
         setBookedItem,
     } = useBook();
 
-    const { allService } = useService();
+    const { allService, hairStylist } = useService();
 
     useEffect(() => {
         getBookingTime();
@@ -37,19 +37,18 @@ export default function BookingForm() {
     useEffect(() => {
         if (input.bookDate !== "" && input.hairStylistId !== "") {
             findBookedItem(input).then((res) => {
-                setBookedItem(res.data?.[0]);
+                setBookedItem(res?.data);
             });
         }
     }, [input.bookDate, input.hairStylistId]);
 
     const navigate = useNavigate();
 
+    console.log(bookedItem.data);
+
     const handleChangeInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
-
-    // console.log(bookedItem?.data);
-    // console.log(bookTime.data);
 
     const handleSubmitForm = async (e) => {
         try {
@@ -74,13 +73,13 @@ export default function BookingForm() {
                 return;
             }
         } catch (error) {
-            console.log(error);
+            toast.error("ไม่สามารถจองในวันนั้นได้");
         }
     };
 
     return (
         <form
-            className="grid grid-cols-2 gap-x-3 gap-y-4 "
+            className="grid grid-cols-1 gap-x-3 gap-y-4 w-1/3 "
             onSubmit={handleSubmitForm}
         >
             <div className="col-span-full">
@@ -93,7 +92,7 @@ export default function BookingForm() {
                 />
             </div>
 
-            <div className="">
+            <div className="col-span-full">
                 <select
                     name="hairStylistId"
                     className="p-2 rounded-lg w-full block mx-auto"
@@ -103,7 +102,11 @@ export default function BookingForm() {
                     <option value="" disabled selected hidden>
                         เลือกช่าง
                     </option>
-                    <option value="1">Alice</option>
+                    {hairStylist.map((el) => (
+                        <option key={el.id} value={el.id}>
+                            {el.hairStylistName}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -118,11 +121,11 @@ export default function BookingForm() {
                         เลือกเวลา
                     </option>
 
-                    {bookTime.data?.map((el) => {
+                    {bookTime.data?.map((el) => (
                         <option key={el.id} value={el.id}>
                             {el.bookTime}
-                        </option>;
-                    })}
+                        </option>
+                    ))}
                 </select>
             </div>
 

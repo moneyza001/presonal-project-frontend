@@ -2,6 +2,7 @@ import { createContext } from "react";
 
 import axios from "../config/axios";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const BookContext = createContext();
 
@@ -26,6 +27,7 @@ export default function BookContextProvider({ children }) {
             return res.data;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     };
 
@@ -42,6 +44,31 @@ export default function BookContextProvider({ children }) {
         try {
             const findBooked = await axios.post("/book/booked-item", inputObj);
             setBookedItem(findBooked);
+            return findBooked;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const deleteBookedItem = async (bookedId) => {
+        try {
+            await axios.delete(`book/${bookedId}`);
+        } catch (error) {
+            toast.error("ไม่สามารถยกเลิกการจองได้");
+        }
+    };
+
+    const editBookedStatusForAdmin = async (bookId, bookedDetail) => {
+        try {
+            await axios.patch(`book/admin/${bookId}`, bookedDetail);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const editBookedItemForUser = async (bookId, bookStatus) => {
+        try {
+            await axios.patch(`book/${bookId}`, bookStatus);
         } catch (error) {
             console.log(error);
         }
@@ -60,6 +87,9 @@ export default function BookContextProvider({ children }) {
                 findBookedItem,
                 bookedItem,
                 setBookedItem,
+                deleteBookedItem,
+                editBookedStatusForAdmin,
+                editBookedItemForUser,
             }}
         >
             {children}

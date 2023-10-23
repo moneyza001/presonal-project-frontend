@@ -2,7 +2,7 @@ import BookingForm from "../feature/bookingfeature/BookingForm";
 
 export default function BookingPage() {
     return (
-        <div className="w-1/3 flex justify-center items-center">
+        <div className="bg-sky-50 h-screen flex items-center justify-center">
             <BookingForm />
         </div>
     );

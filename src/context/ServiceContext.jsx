@@ -7,14 +7,19 @@ export const ServiceContext = createContext();
 export default function ServiceContextProvider({ children }) {
     const [someService, setSomeService] = useState([]);
     const [allService, setAllService] = useState([]);
+    const [hairStylist, setHairStylist] = useState([]);
 
     useEffect(() => {
         try {
             const getService = async () => {
                 const serviceItem = await axios.get("/service");
-                const allServiceItem = await axios.get("/service/all");
                 setSomeService(serviceItem.data);
+
+                const allServiceItem = await axios.get("/service/all");
                 setAllService(allServiceItem.data);
+
+                const hairStylists = await axios.get("/service/hairStylist");
+                setHairStylist(hairStylists.data);
             };
             getService();
         } catch (error) {
@@ -23,7 +28,9 @@ export default function ServiceContextProvider({ children }) {
     }, []);
 
     return (
-        <ServiceContext.Provider value={{ allService, someService }}>
+        <ServiceContext.Provider
+            value={{ allService, someService, hairStylist }}
+        >
             {children}
         </ServiceContext.Provider>
     );
